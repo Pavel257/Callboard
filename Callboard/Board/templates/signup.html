@@ -1,0 +1,17 @@
+
+{% extends "base_sign.html" %}
+
+{% block content %}<br>
+
+<h2><p align="center">Регистрация нового пользователя</p></h2>
+<br>
+<a title="Регистрация через почту" class="socialaccount_provider google" href="/accounts/google/login/?process=login">Google</a>
+<br>
+<form method="post">
+
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Продолжить">
+</form>
+
+{% endblock %}

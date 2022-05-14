@@ -1,0 +1,61 @@
+<!--главная страница сайта, отображает все объявления (список)-->
+
+{% extends 'flatpages/default.html' %}
+{% load my_filters %}
+{% block title %} Все объявления {% endblock title %}
+
+{% block content %}
+<form method="GET">
+    {{ filter.form }} <!-- Форму от фильтров за нас сделает django. А вот кнопку, увы придётся делать самому -->
+    <input type="submit" value="Найти">
+
+</form>
+<br>
+<h2>Все объявления</h2>
+<hr size="5" style="color: #0099ff;"/>
+<br>
+
+{% if Adverts %}
+{% for advert in Adverts %}
+<br>
+<hr>
+<h5><a href="{% url 'detail' advert.id %}"><u>{{ advert.title }}</u></a></h5>
+<br>
+<h6>{{ advert.content|safe }}</h6>
+<br>
+<h7>Автор: {{ advert.user }}</h7><br>
+<h7>Категория: {{ advert.category }}</h7>
+<br>
+<h7>Дата публикации:{{ advert.dateCreation }}</h7>
+
+
+{% endfor %}
+{% else %}
+<h3>Такго объявления нет</h3>
+{% endif %}
+<!--код для пагинации-->
+{% if is_paginated %}
+{% if page_obj.has_previous %}
+<a href="?{{ request.get_full_path|update_page:1}}">Начало</a>
+<a href="?{{ request.get_full_path|update_page:page_obj.previous_page_number}}"><<<</a>
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+{% if page_obj.number == num %}
+<a>{{ num }}</a>
+{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+<a href="?page={{ num }}">{{ num }}</a>
+{% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">>>></a>
+<a href="?page={{ page_obj.paginator.num_pages }}">Конец</a>
+{% endif %}
+
+{% endif %}
+
+<hr>
+
+
+{% endblock content %}

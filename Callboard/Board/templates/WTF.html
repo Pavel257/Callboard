@@ -1,0 +1,46 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Удалить объявление {% endblock title %}
+
+{% block content %}
+<h2>Вы действительно хотите удалить объявление?</h2>
+<table>
+    <tr>
+        <td>
+            <h4><em><span style="color: #008000;">Объявление №</span></em></h4>
+            <hr/>
+        </td>
+        <td>
+            <h4><em><span style="color: #008000;">Имя автора</span></em></h4>
+            <hr/>
+        </td>
+        <td>
+            <h4><em><span style="color: #008000;">Категория</span></em></h4>
+            <hr/>
+        </td>
+       
+        <td>
+            <h4><em><span style="color: #008000;">Дата публикации</span></em></h4>
+            <hr/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            {{ advert.pk }}
+        </td>
+        <td>
+            {{ post.user }}
+        </td>
+        <td>
+            {{ advert.category }}
+        </td>
+        <td>
+            {{ advert.dateCreation }}
+        </td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Удалить"></form>
+{% endblock content %}

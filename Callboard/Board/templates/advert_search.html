@@ -1,0 +1,87 @@
+<!--страница поиска объявлений-->
+
+{% extends 'flatpages/default.html' %}
+{% load my_filters %}
+{% block title %} Поиск объявлений {% endblock title %}
+
+{% block content %}
+
+<br><h2>Поиск объявлений</h2>
+<hr size="5" style="color: #0099ff;"/>
+
+
+<br><form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form><br>
+
+{% if filter.qs %}
+<table>
+    <tr>
+        <td width="400">
+            <h5>Заголовок</h5>
+        </td>
+
+        <td width="100">
+            <h5>Категория</h5>
+        </td>
+
+        <td width="200">
+            <h5>Автор</h5>
+        </td>
+
+        <td width="130">
+            <h5>Дата</h5>
+        </td>
+
+    </tr>
+    {% for advert in filter.qs %}
+    <tr>
+        <td>
+            <p align="center"><a href="{% url 'detail' advert.id %}"><u>{{ advert.title | truncatechars:60 }}</u></a></p>
+        </td>
+
+        <td>
+            <p align="center">{{ advert.category }}</p>
+        </td>
+
+        <td>
+            <p align="center">{{ advert.user }}</p>
+        </td>
+
+
+        <td>
+            <p align="center">{{ advert.dateCreation | date:"d M Y" }}</p>
+        </td>
+
+    </tr>
+    {% endfor %}
+    {% else %}
+<h3>Такго объявления нет</h3>
+{% endif %}
+</table>
+<!--код для пагинации-->
+{% if is_paginated %}
+{% if page_obj.has_previous %}
+<a href="?page=1">Начало</a>
+<a href="?page={{ page_obj.previous_page_number}}"><<<</a>
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+{% if page_obj.number == num %}
+<a>{{ num }}</a>
+{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+<a href="?page={{ num }}">{{ num }}</a>
+{% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">>>></a>
+<a href="?page={{ page_obj.paginator.num_pages }}">Конец</a>
+{% endif %}
+
+{% endif %}
+
+<br>
+<hr>
+{% endblock content %}

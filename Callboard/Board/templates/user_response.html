@@ -1,0 +1,91 @@
+<!--страница отликов пользователя-->
+
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Отклики пользователя {% endblock title %}
+
+{% block content %}
+<br>
+<h2>Отклики</h2>
+<hr size="5" style="color: #0099ff;"/>
+<br>
+<form method="GET">
+    {{ filter.form }}
+    <input type="submit" value="Найти">
+</form><br>
+
+
+{% if not new_response %}
+<br><h3>Новых откликов нет</h3><br>
+{% endif %}
+
+{% if new_response %}
+<br><h3>Новые отклики</h3><br>
+
+<table >
+    <tr>
+        <td width="300"><h5>Объявление</h5></td>
+        <td width="100"><h5>Пользователь</h5></td>
+        <td width="250"><h5>Контакты</h5></td>
+        <td width="150"><h5>Дата отклика</h5></td>
+        <td width="250"><h5>Действия</h5></td>
+    </tr>
+    {% for response in filter.qs %}
+    <tr>
+        <td><p align="center">{{ response.advert }}</p></td>
+        <td><p align="center">{{ response.user_response.first_name }} {{ response.user_response.last_name }}</p></td>
+        <td><p align="center">{{ response.text }}</p></td>
+        <td><p align="center">{{ response.dateCreation | date:"d M Y" }}</p></td>
+        <td><p align="center"><a href="{% url 'accept' response.id %}"><u><strong><span style="color: #33ff33;">Принять</span></strong></u></a> /
+            <a href="{% url 'remove' response.id %}"><u><strong><span style="color: #ff6600;">Отклонить</span></strong></u></a></p></td>
+    </tr>
+    {% endfor %}
+</table><br>
+{% endif %}
+
+{% if add_response %}
+<br><h3>Принятые отклики</h3><br>
+<table >
+    <tr>
+        <td width="300"><h5>Объявление</h5></td>
+        <td width="100"><h5>Пользователь</h5></td>
+        <td width="250"><h5>Контакты</h5></td>
+        <td width="150"><h5>Дата отклика</h5></td>
+        <td width="250"><h5>Статус</h5></td>
+    </tr>
+    {% for response in add_response %}
+    <tr>
+        <td><p align="center">{{ response.advert }}</p></td>
+        <td><p align="center">{{ response.user_response.first_name }} {{ response.user_response.last_name }}</p></td>
+        <td><p align="center">{{ response.text }}</p></td>
+        <td><p align="center">{{ response.dateCreation | date:"d M Y" }}</p></td>
+        <td><p align="center">Принят (<a href="{% url 'remove' response.id %}"><u>Отклонить</u></a>)</p></td>
+    </tr>
+    {% endfor %}
+</table><br>
+{% endif %}
+
+{% if del_response %}
+<br><h3>Отклоненные отклики</h3><br>
+<table >
+    <tr>
+        <td width="300"><h5>Объявление</h5></td>
+        <td width="100"><h5>Пользователь</h5></td>
+        <td width="250"><h5>Контакты</h5></td>
+        <td width="150"><h5>Дата отклика</h5></td>
+        <td width="250"><h5>Статус</h5></td>
+    </tr>
+    {% for response in del_response %}
+    <tr>
+        <td><p align="center">{{ response.advert }}</p></td>
+        <td><p align="center">{{ response.user_response.first_name }} {{ response.user_response.last_name }}</p></td>
+        <td><p align="center">{{ response.text }}</p></td>
+        <td><p align="center">{{ response.dateCreation | date:"d M Y" }}</p></td>
+        <td><p align="center">Отклонен (<a href="{% url 'accept' response.id %}"><u>Принять</u></a>)</p></td>
+    </tr>
+    {% endfor %}
+</table><br>
+{% endif %}
+
+
+{% endblock content %}

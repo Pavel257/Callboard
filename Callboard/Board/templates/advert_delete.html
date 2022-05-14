@@ -1,0 +1,25 @@
+<!--страница подтверждения удаления объявления-->
+
+{% extends 'flatpages/default.html' %}
+
+{% block title %} Удалить объявление {% endblock title %}
+
+{% block content %}
+<br>
+<h3>Вы действительно хотите удалить объявление?</h3>
+<br>
+{{ advert.title }}
+<br>
+<br>
+(Объявление №{{ advert.pk }}; Имя автора: {{ post.user }}; Категория: {{ advert.category }}; дата создания: {{ advert.dateCreation }})
+<br>
+<br>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }} <!-- Теперь нам нужна только готовая форма и кнопка -->
+    <input type="submit" value="Удалить">
+</form>
+<br>
+{% endblock content %}
+
+
